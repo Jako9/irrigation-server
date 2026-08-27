@@ -1,0 +1,28 @@
+[Unit]
+Description=Irrigation telemetry receiver
+After=network-online.target local-fs.target
+Wants=network-online.target
+RequiresMountsFor=/var/lib/irrigation
+
+[Service]
+Type=simple
+User=irrigation
+Group=irrigation
+WorkingDirectory=/opt/irrigation-server
+EnvironmentFile=/etc/irrigation-server.env
+Environment=IRRIGATION_HOST=127.0.0.1
+Environment=IRRIGATION_ALLOWED_SUBNET=127.0.0.1/32
+Environment=IRRIGATION_DATA_DIR=/var/lib/irrigation
+Environment=IRRIGATION_MANAGEMENT_DIR=/var/lib/irrigation/management
+ExecStart=/usr/bin/node /opt/irrigation-server/server.js
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=10s
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/irrigation
+
+[Install]
+WantedBy=multi-user.target

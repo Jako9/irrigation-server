@@ -1,0 +1,32 @@
+# Credentials and machine-specific configuration
+.env
+.env.*
+!.env.example
+config.json
+
+# Runtime data and management artifacts
+data/
+management/
+admin-backups/
+*.sqlite
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.db
+*.db-wal
+*.db-shm
+*.log
+*.bin
+commands.json
+management-state.json
+
+# Dependencies, generated output, and tools
+node_modules/
+coverage/
+.nyc_output/
+__pycache__/
+*.py[cod]
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

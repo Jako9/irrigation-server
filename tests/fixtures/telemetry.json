@@ -1,0 +1,66 @@
+{
+  "clock_s": 86400,
+  "next_humidity_s": 90000,
+  "battery": {
+    "valid": true,
+    "voltage_v": 12.74,
+    "soc_percent": 86,
+    "status_raw": 1,
+    "stage_raw": 2,
+    "charge_current_a": 1.35,
+    "solar_voltage_v": 18.42,
+    "solar_current_a": 1.12,
+    "solar_power_w": 20.63,
+    "load_state_raw": 1,
+    "load_current_a": 0.38,
+    "load_power_w": 4.84,
+    "usb_state_raw": 0,
+    "usb_voltage_v": 5.03,
+    "internal_temperature_c": 31.4,
+    "ambient_temperature_c": 23.6,
+    "temperature_state_raw": 0
+  },
+  "weather": {
+    "valid": true,
+    "temperature_c": 22.5,
+    "weather_code": 1,
+    "is_day": true
+  },
+  "zones": [
+    {
+      "zone": 1,
+      "enabled": true,
+      "raw_a": 2100,
+      "raw_b": 2150,
+      "wetness_a": 42.5,
+      "wetness_b": 40.8,
+      "wetness": 41.65,
+      "threshold": 35,
+      "requested": false,
+      "cooldown_blocked": false,
+      "watering": false,
+      "has_been_watered": true,
+      "last_watered_s": 64800,
+      "close_deadline_s": 0,
+      "status": "OK"
+    },
+    {
+      "zone": 5,
+      "enabled": false,
+      "raw_a": null,
+      "raw_b": null,
+      "wetness_a": null,
+      "wetness_b": null,
+      "wetness": null,
+      "threshold": 35,
+      "requested": false,
+      "cooldown_blocked": false,
+      "watering": false,
+      "has_been_watered": false,
+      "last_watered_s": 0,
+      "close_deadline_s": 0,
+      "status": "DISABLED"
+    }
+  ],
+  "logs": []
+}

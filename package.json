@@ -1,0 +1,17 @@
+{
+  "name": "irrigation-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Authenticated telemetry receiver and management endpoint for the Jako9 irrigation system",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.17.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js"
+  },
+  "dependencies": {
+    "sqlite3": "6.0.1"
+  }
+}
