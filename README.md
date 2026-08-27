@@ -50,8 +50,9 @@ are intentionally not versioned.
 
 ### Requirements
 
-- Node.js 20.17 or newer
-- npm for a standalone installation
+- Node.js 18.20 or newer
+- Either npm for a standalone installation or a compatible distribution
+  package that provides the Node `sqlite3` module
 - A writable persistent data directory
 
 Install the pinned dependency:
@@ -59,6 +60,18 @@ Install the pinned dependency:
 ```bash
 npm ci
 ```
+
+On Debian-based systems, the distribution packages can be used instead of a
+repository-local `node_modules` directory:
+
+```bash
+sudo apt install nodejs node-sqlite3
+node -e "require('sqlite3')"
+```
+
+Choose one dependency method per host. When using the distribution module, do
+not run `npm ci`; confirm that `require('sqlite3')` succeeds with the same Node
+binary used by the service.
 
 Create private runtime directories and configuration:
 
@@ -105,6 +118,52 @@ sudo systemd-analyze verify /etc/systemd/system/irrigation-server.service
 sudo systemctl daemon-reload
 sudo systemctl enable --now irrigation-server.service
 ```
+
+For a Git-based deployment, clone the repository into a stable path and set
+`WorkingDirectory` and `ExecStart` in the unit to that checkout. Keep the
+database, management directory, firmware, logs, backups, and EnvironmentFile
+outside the checkout. If the checkout is below a home directory, a hardened
+unit must use `ProtectHome=read-only` (or another setting that permits the
+service to read that path) instead of `ProtectHome=true`.
+
+Create the EnvironmentFile as a private file owned by root and readable only
+as required by the service manager. It must define the shared secret, bind
+address, allowed subnet, data directory, and management directory; it may also
+override the port and retention limits. Do not place secrets directly in the
+unit or repository.
+
+Before enabling the unit, adapt `User`, `Group`, `RequiresMountsFor`, and
+`ReadWritePaths`, then validate and activate it:
+
+```bash
+sudo systemd-analyze verify /etc/systemd/system/irrigation-server.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now irrigation-server.service
+systemctl is-enabled irrigation-server.service
+systemctl is-active irrigation-server.service
+```
+
+`enable` makes the receiver start after reboot. Keep its network and mount
+dependencies in the unit so startup waits for required resources.
+
+### Updating a Git deployment
+
+Pull only fast-forward updates, refresh dependencies only when the manifests
+changed, validate, and restart only this service:
+
+```bash
+git pull --ff-only
+# npm ci --omit=dev              # npm-managed installations only
+node --check server.js
+sudo systemctl restart irrigation-server.service
+sudo systemctl --no-pager --full status irrigation-server.service
+```
+
+A pull does not reload an already-running Node process. Verify the listener and
+an authenticated read-only request after restarting. For rollback, check out
+the previously deployed commit, repeat the dependency and syntax checks, and
+restart this service. Preserve the prior checkout and private configuration
+until the new version has been verified.
 
 ## HTTP interface
 
