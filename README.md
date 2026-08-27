@@ -152,8 +152,3 @@ Run the syntax check with:
 ```bash
 npm run check
 ```
-
-Never commit `.env`, `config.json`, databases, logs, management state, OTA
-images, backups, private network details, or real telemetry. Before publishing,
-inspect staged files with `git diff --cached` and confirm that examples contain
-placeholders only.
