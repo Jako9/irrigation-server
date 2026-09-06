@@ -211,3 +211,18 @@ Run the syntax check with:
 ```bash
 npm run check
 ```
+
+## Zone wetness balance
+
+Controller zones accept `wetness_balance` in [0, 1]: 0 selects the driest
+sensor, 0.5 averages the two sensors, and 1 selects the wettest. Initial
+values for zones 1?5 are 0.8, 0.5, 0.5, 0.8, 0.5. The dashboard admin
+configuration editor exposes this field and validates its range.
+
+The configured watering threshold is a minimum. Firmware uses current
+Open-Meteo temperature to add roughly 4.3 percentage points at 20?C, 10 at
+30?C, and 14.4 at 40?C, capped at 20 points and 100% total wetness.
+Unavailable weather adds zero. Telemetry's existing `threshold` field stores
+this effective threshold, so charts and zone cards reflect the watering
+decision. The HTTP receiver already preserves this value without changes to
+its database schema or ingestion code.
